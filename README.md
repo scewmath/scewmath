@@ -6,32 +6,32 @@
 
 <!-- SOCIAL + COUNTERS (keep these near the top for instant signals) -->
 <p align="center">
-  <a href="https://github.com/SCEWMATH" title="Follow @SCEWMATH">
-    <img alt="Followers" src="https://img.shields.io/github/followers/SCEWMATH?style=for-the-badge&logo=github&label=Follow&color=236ad3" />
+  <a href="https://github.com/scewmath" title="Follow @scewmath">
+    <img alt="Followers" src="https://img.shields.io/github/followers/scewmath?style=for-the-badge&logo=github&label=Follow&color=236ad3" />
   </a>
-  <img alt="Profile views" title="Profile views" src="https://komarev.com/ghpvc/?username=SCEWMATH&style=for-the-badge&color=6FA4FC" />
-  <img alt="Stars" src="https://img.shields.io/github/stars/SCEWMATH?label=Stars&style=for-the-badge&color=blueviolet" />
+  <img alt="Profile views" title="Profile views" src="https://komarev.com/ghpvc/?username=scewmath&style=for-the-badge&color=6FA4FC" />
+  <img alt="Stars" src="https://img.shields.io/github/stars/scewmath?label=Stars&style=for-the-badge&color=blueviolet" />
 </p>
 
 <!-- QUICK ABOUT -->
 <p align="center">
-  <b>CS • AI • builder</b> — I like shipping small tools and weird experiments. <br/>
-  <i>Currently hacking on mobile + data viz.</i>
+  <b>CS + AI @UTAustin</b> — I like shipping tools and weird experiments. <br/>
+  <i>Currently exploring ways to commercialize the latest AI research.</i>
 </p>
 
 <!-- CORE STATS (stable services, dark-friendly) -->
 <p align="center">
-  <img height="170" src="https://github-readme-stats.vercel.app/api?username=SCEWMATH&show_icons=true&count_private=true&theme=nord&hide_border=true&hide=issues,contribs&bg_color=282C34" />
-  <img height="170" src="https://github-readme-stats.vercel.app/api/top-langs/?username=SCEWMATH&layout=compact&hide_border=true&theme=nord&bg_color=282C34&langs_count=6&hide=jupyter%20notebook,tex,css,php" />
+  <img height="170" src="https://github-readme-stats.vercel.app/api?username=scewmath&show_icons=true&count_private=true&theme=nord&hide_border=true&hide=issues,contribs&bg_color=282C34" />
+  <img height="170" src="https://github-readme-stats.vercel.app/api/top-langs/?username=scewmath&layout=compact&hide_border=true&theme=nord&bg_color=282C34&langs_count=6&hide=jupyter%20notebook,tex,css,php" />
 </p>
 
 <p align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com?user=SCEWMATH&theme=nord&hide_border=true&background=282C34" />
+  <img src="https://github-readme-streak-stats.herokuapp.com?user=scewmath&theme=nord&hide_border=true&background=282C34" />
 </p>
 
 <!-- ACTIVITY GRAPH (optional: comment out if rate-limited) -->
 <p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=SCEWMATH&theme=react-dark&bg_color=282C34&hide_border=true" />
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=scewmath&theme=react-dark&bg_color=282C34&hide_border=true" />
 </p>
 
 <!-- TOOLBELT (compact line of tech you actually use) -->
