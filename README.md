@@ -36,8 +36,8 @@
 
 <!-- PINNED WORK: highlight 2–4 strongest repos -->
 <p align="center">
-  <a href="https://github.com/scewmath/<REPO_ONE>">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=scewmath&repo=<REPO_ONE>&theme=nord&hide_border=true&bg_color=282C34" />
+  <a href="https://github.com/scewmath/https://github.com/rajpatel923/goonbytes">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=scewmath&repo=https://github.com/rajpatel923/goonbytes&theme=nord&hide_border=true&bg_color=282C34" />
   </a>
   <a href="https://github.com/scewmath/<REPO_TWO>">
     <img src="https://github-readme-stats.vercel.app/api/pin/?username=scewmath&repo=<REPO_TWO>&theme=nord&hide_border=true&bg_color=282C34" />
