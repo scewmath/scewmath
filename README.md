@@ -3,20 +3,28 @@
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=6FA4FC&center=true&width=520&lines=hi+%F0%9F%91%8B;welcome+to+my+profile;check+out+some+of+my+projects...;star+and+follow+(if+you+want);thank+you!" />
 </p>
 
-[![Chris Mathews profile views](https://u8views.com/api/v1/github/profiles/233640737/views/day-week-month-total-count.svg)](https://u8views.com/github/scewmath)
+<p align="center">
+  <a href="https://u8views.com/github/scewmath">
+    <img src="https://u8views.com/api/v1/github/profiles/233640737/views/day-week-month-total-count.svg" alt="Profile Views"/>
+  </a>
+</p>
+
+---
 
 <!-- SOCIAL + COUNTERS -->
 <p align="center">
   <a href="https://github.com/scewmath" title="Follow @scewmath">
-    <img alt="Followers" src="https://img.shields.io/github/followers/scewmath?style=for-the-badge&logo=github&label=Follow&color=236ad3" />
+    <img alt="Followers" src="https://img.shields.io/github/followers/scewmath?style=for-the-badge&logo=github&label=Follow&color=236ad3"/>
   </a>
-  <img alt="Profile views" title="Profile views" src="https://komarev.com/ghpvc/?username=scewmath&style=for-the-badge&color=6FA4FC" />
-  <img alt="Stars" src="https://img.shields.io/github/stars/scewmath?label=Stars&style=for-the-badge&color=blueviolet" />
+  <img alt="Profile views" title="Profile views" src="https://komarev.com/ghpvc/?username=scewmath&style=for-the-badge&color=6FA4FC"/>
+  <img alt="Stars" src="https://img.shields.io/github/stars/scewmath?label=Stars&style=for-the-badge&color=blueviolet"/>
 </p>
+
+---
 
 <!-- ABOUT -->
 <p align="center">
-  <b>CS + AI @ UT Austin</b> • Turning ideas into code. <br/>
+  <b>CS + AI @ UT Austin</b> • Turning ideas into code.<br/>
   <i>Currently exploring ways to commercialize cutting-edge AI research.</i>
 </p>
 
