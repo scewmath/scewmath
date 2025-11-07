@@ -3,6 +3,8 @@
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=6FA4FC&center=true&width=520&lines=hi+%F0%9F%91%8B;welcome+to+my+profile;check+out+some+of+my+projects...;star+and+follow+(if+you+want);thank+you!" />
 </p>
 
+[![Chris Mathews profile views](https://u8views.com/api/v1/github/profiles/233640737/views/day-week-month-total-count.svg)](https://u8views.com/github/scewmath)
+
 <!-- SOCIAL + COUNTERS -->
 <p align="center">
   <a href="https://github.com/scewmath" title="Follow @scewmath">
