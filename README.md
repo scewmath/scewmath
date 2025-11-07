@@ -11,17 +11,6 @@
 
 ---
 
-<!-- SOCIAL + COUNTERS -->
-<p align="center">
-  <a href="https://github.com/scewmath" title="Follow @scewmath">
-    <img alt="Followers" src="https://img.shields.io/github/followers/scewmath?style=for-the-badge&logo=github&label=Follow&color=236ad3"/>
-  </a>
-  <img alt="Profile views" title="Profile views" src="https://komarev.com/ghpvc/?username=scewmath&style=for-the-badge&color=6FA4FC"/>
-  <img alt="Stars" src="https://img.shields.io/github/stars/scewmath?label=Stars&style=for-the-badge&color=blueviolet"/>
-</p>
-
----
-
 <!-- ABOUT -->
 <p align="center">
   <b>CS + AI @ UT Austin</b> • Turning ideas into code.<br/>
@@ -70,3 +59,14 @@
 <p align="center">
   <i>Thanks for stopping by — star something you like :)</i>
 </p>
+
+<!-- SOCIAL + COUNTERS -->
+<p align="center">
+  <a href="https://github.com/scewmath" title="Follow @scewmath">
+    <img alt="Followers" src="https://img.shields.io/github/followers/scewmath?style=for-the-badge&logo=github&label=Follow&color=236ad3"/>
+  </a>
+  <img alt="Profile views" title="Profile views" src="https://komarev.com/ghpvc/?username=scewmath&style=for-the-badge&color=6FA4FC"/>
+  <img alt="Stars" src="https://img.shields.io/github/stars/scewmath?label=Stars&style=for-the-badge&color=blueviolet"/>
+</p>
+
+---
