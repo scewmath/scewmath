@@ -492,3 +492,57 @@ def sec_stack(ctx, d, profile, stack, icons):
     return "".join(out), y0 + len(stack) * row_h + 4
 
 
+def sec_activity(ctx, d, profile):
+    out = []
+    window = d["window"]
+    recent = sum(c for _, c in window)
+    out.append(heading(P, 34, "contributions", f"{fmt(recent)} in the last 30 days", ctx))
+    cx, cy, cwid, ch = P, 64, SPLIT - P - 28, 128
+    base = cy + ch
+    peak = max((c for _, c in window), default=0) or 1
+    slot = cwid / len(window)
+    bw = max(slot - 4, 2)
+    peak_i = max(range(len(window)), key=lambda i: window[i][1])
+    for i, (day, c) in enumerate(window):
+        bx = cx + i * slot + (slot - bw) / 2
+        if c == 0:
+            out.append(f'<rect x="{n(bx)}" y="{n(base - 2)}" width="{n(bw)}" height="2" fill="{FAINT}"/>')
+            continue
+        bh = max(c / peak * ch, 3)
+        color = ctx.accent if i == len(window) - 1 or c >= peak * 0.5 else tint(ctx.accent, 0.0)
+        opacity = "" if c >= peak * 0.5 else ' opacity=".55"'
+        anim = ""
+        if ctx.motion:
+            dl = 0.2 + i * 0.025
+            anim = (f'<animate attributeName="height" from="0" to="{n(bh)}" dur=".6s" begin="{dl:.3f}s" fill="freeze" '
+                    f'calcMode="spline" keyTimes="0;1" keySplines=".2 .8 .2 1"/>'
+                    f'<animate attributeName="y" from="{n(base)}" to="{n(base - bh)}" dur=".6s" begin="{dl:.3f}s" fill="freeze" '
+                    f'calcMode="spline" keyTimes="0;1" keySplines=".2 .8 .2 1"/>')
+        out.append(f'<rect x="{n(bx)}" y="{n(base - bh)}" width="{n(bw)}" height="{n(bh)}" fill="{color}"{opacity}>{anim}</rect>')
+    if window[peak_i][1] > 0:
+        px = cx + peak_i * slot + slot / 2
+        out.append(T(px, base - ch - 8, fmt(window[peak_i][1]), size=11, fill=MID, anchor="middle"))
+    out.append(f'<line x1="{n(cx)}" y1="{n(base + 6)}" x2="{n(cx + cwid)}" y2="{n(base + 6)}" stroke="{FAINT}" stroke-dasharray="3 3"/>')
+    out.append(T(cx, base + 26, month_day(window[0][0]), size=12, fill=DIM))
+    out.append(T(cx + cwid, base + 26, "today", size=12, fill=DIM, anchor="end"))
+
+    # totals column
+    rx = SPLIT + 24
+    out.append(heading(rx, 34, "totals", "all time", ctx))
+    cur, best = d["streak"]
+    rows = [(fmt(d["total"]), "contributions"), (str(cur), "day streak, now"), (str(best), "day streak, best")]
+    s = 4
+    numw = max(px_width(v, s) for v, _ in rows)
+    for i, (v, label) in enumerate(rows):
+        ry = 58 + i * 42
+        out.append(big_number(v, rx, ry, s, ctx))
+        out.append(T(rx + numw + 18, ry + 22, esc(label), size=13, fill=MID))
+    by = 58 + 3 * 42 + 6
+    bw2 = W - P - rx - 64
+    out.append(bar(rx, by, bw2, 12, cur / best if best else 0, ctx, delay=0.6))
+    out.append(T(W - P, by + 11, f"{cur}/{best}", size=13, fill=INK, anchor="end"))
+    h = base + 42
+    out.append(vdivider(SPLIT, 0, h))
+    return "".join(out), h
+
+
