@@ -546,3 +546,28 @@ def sec_activity(ctx, d, profile):
     return "".join(out), h
 
 
+def sec_langs_now(ctx, d, profile):
+    split = 420
+    out = [heading(P, 34, "languages", d.get("langs_note", ""), ctx)]
+    langs = d["langs"]
+    for i, (name, pct, color) in enumerate(langs):
+        y = 64 + i * 30
+        out.append(f'<rect x="{P}" y="{y - 9}" width="8" height="8" fill="{color}"/>')
+        out.append(T(P + 16, y, esc(name.lower()), size=13, fill=INK))
+        bx, bwid = P + 124, split - P - 124 - 84
+        out.append(bar(bx, y - 10, bwid, 11, pct / langs[0][1] * 0.92, ctx, delay=0.3 + i * 0.08))
+        out.append(T(split - 24, y, f"{pct:.1f}%", size=13, fill=INK, anchor="end"))
+
+    rx = split + 24
+    out.append(heading(rx, 34, "now", "~/now.txt", ctx))
+    lines = profile.get("now", [])
+    key_w = max((len(k) for k, _ in lines), default=4) * cw(13) + 16
+    for i, (k, v) in enumerate(lines):
+        y = 64 + i * 30
+        out.append(T(rx, y, esc(k), size=13, fill=ctx.accent))
+        out.append(T(rx + key_w, y, esc(clip(v, 13, W - P - rx - key_w)), size=13, fill=INK))
+    h = max(64 + len(langs) * 30, 64 + len(lines) * 30) - 4
+    out.append(vdivider(split, 0, h))
+    return "".join(out), h
+
+
