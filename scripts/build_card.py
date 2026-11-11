@@ -458,3 +458,37 @@ def sec_header(ctx, d, profile):
     return "".join(out), ty + 26
 
 
+def icon_markup(item, icons, x, y, size):
+    name = item["name"]
+    if "mono" in item:
+        label = item["mono"]
+        s = 1.25
+        tw, th = px_width(label, s), 7 * s
+        return (f'<rect x="{n(x)}" y="{n(y)}" width="{size}" height="{size}" rx="5" fill="{item.get("color", MID)}"/>'
+                f'<path d="{px_path(label, x + (size - tw) / 2, y + (size - th) / 2, s)}" fill="#fff"/>')
+    ic = icons.get(name)
+    if not ic:
+        return ""
+    return f'<svg x="{n(x)}" y="{n(y)}" width="{size}" height="{size}" viewBox="{ic["viewBox"]}">{ic["body"]}</svg>'
+
+
+def sec_stack(ctx, d, profile, stack, icons):
+    total = sum(len(g["items"]) for g in stack)
+    out = [heading(P, 34, "stack", f"{total} tools", ctx)]
+    size, step, row_h = 28, 46, 46
+    y0 = 58
+    for r, group in enumerate(stack):
+        ry = y0 + r * row_h
+        out.append(T(P, ry + size / 2 + 4, esc(group["group"]), size=12, fill=DIM))
+        out.append(f'<rect x="{P + 120}" y="{n(ry + size / 2)}" width="12" height="1" fill="{FAINT}"/>')
+        for i, item in enumerate(group["items"]):
+            ix = P + 150 + i * step
+            g = icon_markup(item, icons, ix, ry, size)
+            if ctx.motion:
+                delay = 0.15 + r * 0.12 + i * 0.04
+                g = (f'<g opacity="0">{g}<animate attributeName="opacity" from="0" to="1" dur=".35s" '
+                     f'begin="{delay:.2f}s" fill="freeze"/></g>')
+            out.append(g)
+    return "".join(out), y0 + len(stack) * row_h + 4
+
+
