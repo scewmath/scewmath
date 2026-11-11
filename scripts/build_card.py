@@ -190,3 +190,41 @@ def month_year(d):
     return f"{d.strftime('%b').lower()} {d.year}"
 
 
+# ---------------------------------------------------------------- pure stats
+def compute_streaks(days, today):
+    """days: {date: count}. Returns (current, best).
+
+    Today counts toward the current streak if it has contributions, but an empty
+    today doesn't break it: the day isn't over yet.
+    """
+    best = run = 0
+    d = min(days) if days else today
+    while d <= today:
+        if days.get(d, 0) > 0:
+            run += 1
+            best = max(best, run)
+        else:
+            run = 0
+        d += timedelta(days=1)
+    cur = 0
+    d = today if days.get(today, 0) > 0 else today - timedelta(days=1)
+    while days.get(d, 0) > 0:
+        cur += 1
+        d -= timedelta(days=1)
+    return cur, best
+
+
+def aggregate_languages(repos, exclude=(), top=6):
+    sizes, colors = {}, {}
+    for repo in repos:
+        for edge in repo.get("languages", {}).get("edges", []):
+            name = edge["node"]["name"]
+            if name in exclude:
+                continue
+            sizes[name] = sizes.get(name, 0) + edge["size"]
+            colors[name] = edge["node"].get("color") or MID
+    total = sum(sizes.values()) or 1
+    ranked = sorted(sizes.items(), key=lambda kv: -kv[1])[:top]
+    return [(name, size / total * 100, colors[name]) for name, size in ranked]
+
+
