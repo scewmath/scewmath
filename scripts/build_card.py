@@ -417,3 +417,44 @@ def blink(ctx, dur="1.1s"):
     return f'<animate attributeName="opacity" values="1;0" keyTimes="0;.5" calcMode="discrete" dur="{dur}" repeatCount="indefinite"/>'
 
 
+# ---------------------------------------------------------------- sections
+def sec_topbar(ctx, d, profile):
+    login = profile["login"]
+    loc = profile.get("location", "").split(",")[0].strip().replace(" ", "-") or "home"
+    prompt = span(login, ctx.accent, 600) + span(f"@{loc}", MID) + span(":~$ ", DIM) + span("./readme --live", INK)
+    out = [
+        T(P, 28, prompt, size=13),
+        T(W - P, 28, esc(f"github.com/{login}"), size=12, fill=DIM, anchor="end"),
+    ]
+    return "".join(out), 44
+
+
+def sec_header(ctx, d, profile):
+    s = 8
+    name = profile["name"]
+    y = 34
+    wname = px_width(name, s)
+    out = [
+        f'<path d="{px_path(name, P + 4, y + 4, s)}" fill="{ctx.accent}"/>',
+        f'<path d="{px_path(name, P, y, s)}" fill="{INK}"/>',
+        f'<rect x="{n(P + wname + 2 * s)}" y="{n(y)}" width="{n(4 * s)}" height="{n(7 * s + 4)}" fill="{ctx.accent}">{blink(ctx)}</rect>',
+    ]
+    tag = profile.get("tagline", "")
+    ty = y + 7 * s + 42
+    text = T(P, ty, span("> ", ctx.accent, 700) + span(tag, INK), size=17)
+    if ctx.motion and tag:
+        # typewriter: reveal one character per step
+        full = cw(17) * (len(tag) + 2) + 4
+        steps = len(tag) + 2
+        values = ";".join(n(full * i / steps) for i in range(steps + 1))
+        out.append(
+            f'<clipPath id="type"><rect x="{P}" y="{n(ty - 20)}" width="{n(full)}" height="28">'
+            f'<animate attributeName="width" values="{values}" dur="{steps * 0.07:.2f}s" begin=".4s" '
+            f'calcMode="discrete" fill="freeze"/></rect></clipPath>'
+            f'<g clip-path="url(#type)">{text}</g>'
+        )
+    else:
+        out.append(text)
+    return "".join(out), ty + 26
+
+
