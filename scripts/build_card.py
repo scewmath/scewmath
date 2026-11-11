@@ -646,3 +646,56 @@ def sec_footer(ctx, d, profile):
     return "".join(out), 44
 
 
+def render(d, profile, stack, icons, motion=True):
+    ctx = Ctx(profile.get("accent", "#BF5700"), motion)
+    sections = [
+        sec_topbar(ctx, d, profile),
+        sec_header(ctx, d, profile),
+        sec_stack(ctx, d, profile, stack, icons),
+        sec_activity(ctx, d, profile),
+        sec_langs_now(ctx, d, profile),
+    ]
+    if d["pinned"]:
+        sections.append(sec_pinned(ctx, d, profile))
+    if d.get("tokens"):
+        sections.append(sec_tokens(ctx, d, profile))
+    sections.append(sec_footer(ctx, d, profile))
+
+    body, y = [], 0
+    for i, (markup, h) in enumerate(sections):
+        if i:
+            body.append(divider(y))
+        body.append(f'<g transform="translate(0 {n(y)})">{markup}</g>')
+        y += h + (0 if i == 0 or i == len(sections) - 1 else 16)
+    H = y
+    alt = f"{profile['name'].title()}: stack, contributions, languages, pinned repos, AI token spend"
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{n(H)}" viewBox="0 0 {W} {n(H)}" '
+        f'font-family="{MONO}" role="img" aria-label="{esc(alt)}">'
+        f"<title>{esc(alt)}</title>{defs(ctx)}"
+        f'<rect x=".5" y=".5" width="{W - 1}" height="{n(H - 1)}" rx="10" fill="{BG}" stroke="{BORDER}"/>'
+        + "".join(body)
+        + "</svg>\n"
+    )
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--static", action="store_true", help="no animation (for screenshots)")
+    ap.add_argument("--out", type=Path, default=OUT)
+    args = ap.parse_args(argv)
+
+    profile = json.loads((DATA / "profile.json").read_text())
+    stack = json.loads((DATA / "stack.json").read_text())
+    icons = json.loads((DATA / "icons.json").read_text())
+    d = build_data(profile)
+    svg = render(d, profile, stack, icons, motion=not args.static)
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(svg)
+    cur, best = d["streak"]
+    print(f"wrote {args.out.relative_to(ROOT) if args.out.is_relative_to(ROOT) else args.out}: "
+          f"{d['total']} contributions, streak {cur}/{best}, {len(d['langs'])} langs, {len(d['pinned'])} pinned")
+
+
+if __name__ == "__main__":
+    main()
