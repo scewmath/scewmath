@@ -1,0 +1,47 @@
+[
+  {
+    "group": "languages",
+    "items": [
+      {"name": "Python", "devicon": "python/python-original"},
+      {"name": "TypeScript", "devicon": "typescript/typescript-original"},
+      {"name": "JavaScript", "devicon": "javascript/javascript-original"},
+      {"name": "Java", "devicon": "java/java-original"},
+      {"name": "SQL", "mono": "SQL", "color": "#4479A1"},
+      {"name": "C++", "devicon": "cplusplus/cplusplus-original"},
+      {"name": "C", "devicon": "c/c-original"},
+      {"name": "HTML", "devicon": "html5/html5-original"},
+      {"name": "CSS", "devicon": "css3/css3-original"}
+    ]
+  },
+  {
+    "group": "frameworks",
+    "items": [
+      {"name": "React", "devicon": "react/react-original"},
+      {"name": "Node.js", "devicon": "nodejs/nodejs-original"},
+      {"name": "FastAPI", "devicon": "fastapi/fastapi-original"},
+      {"name": "Spring Boot", "devicon": "spring/spring-original"},
+      {"name": "Playwright", "devicon": "playwright/playwright-original"}
+    ]
+  },
+  {
+    "group": "ml / cv",
+    "items": [
+      {"name": "PyTorch", "devicon": "pytorch/pytorch-original"},
+      {"name": "scikit-learn", "devicon": "scikitlearn/scikitlearn-original"},
+      {"name": "OpenCV", "devicon": "opencv/opencv-original"}
+    ]
+  },
+  {
+    "group": "data / cloud",
+    "items": [
+      {"name": "Docker", "devicon": "docker/docker-original"},
+      {"name": "PostgreSQL", "devicon": "postgresql/postgresql-original"},
+      {"name": "AWS", "devicon": "amazonwebservices/amazonwebservices-original"},
+      {"name": "GCP", "devicon": "googlecloud/googlecloud-original"},
+      {"name": "BigQuery", "simpleicons": "googlebigquery"},
+      {"name": "MongoDB", "devicon": "mongodb/mongodb-original"},
+      {"name": "Git", "devicon": "git/git-original"},
+      {"name": "Convex", "simpleicons": "convex"}
+    ]
+  }
+]
