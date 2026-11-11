@@ -228,3 +228,114 @@ def aggregate_languages(repos, exclude=(), top=6):
     return [(name, size / total * 100, colors[name]) for name, size in ranked]
 
 
+# ---------------------------------------------------------------- github
+def github_token():
+    tok = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if tok:
+        return tok
+    try:
+        return subprocess.run(["gh", "auth", "token"], capture_output=True, text=True, check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        sys.exit("No GITHUB_TOKEN and `gh auth token` failed.")
+
+
+def graphql(query, variables, token):
+    body = json.dumps({"query": query, "variables": variables}).encode()
+    req = urllib.request.Request(
+        "https://api.github.com/graphql",
+        data=body,
+        headers={"Authorization": f"bearer {token}", "User-Agent": "scewmath-readme-card"},
+    )
+    with urllib.request.urlopen(req, timeout=60) as r:
+        out = json.loads(r.read())
+    if out.get("errors"):
+        raise RuntimeError(out["errors"])
+    return out["data"]
+
+
+PROFILE_Q = """
+query($login: String!) {
+  user(login: $login) {
+    contributionsCollection { contributionYears }
+    pinnedItems(first: 6, types: REPOSITORY) {
+      nodes { ... on Repository {
+        nameWithOwner name description stargazerCount pushedAt
+        primaryLanguage { name color }
+      } }
+    }
+    repositories(first: 100, ownerAffiliations: OWNER, isFork: false, privacy: PUBLIC) {
+      nodes { languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
+        edges { size node { name color } }
+      } }
+    }
+  }
+}"""
+
+
+def fetch_calendar(login, years, token):
+    parts = [
+        f'y{y}: contributionsCollection(from: "{y}-01-01T00:00:00Z", to: "{y}-12-31T23:59:59Z") '
+        "{ contributionCalendar { weeks { contributionDays { date contributionCount } } } }"
+        for y in years
+    ]
+    q = "query($login: String!) { user(login: $login) { " + " ".join(parts) + " } }"
+    user = graphql(q, {"login": login}, token)["user"]
+    days = {}
+    for coll in user.values():
+        for week in coll["contributionCalendar"]["weeks"]:
+            for day in week["contributionDays"]:
+                days[date.fromisoformat(day["date"])] = day["contributionCount"]
+    return days
+
+
+def build_data(profile, now=None):
+    token = github_token()
+    login = profile["login"]
+    tz = ZoneInfo(profile.get("timezone", "UTC"))
+    now = now or datetime.now(timezone.utc)
+    today = now.astimezone(tz).date()
+
+    user = graphql(PROFILE_Q, {"login": login}, token)["user"]
+    days = fetch_calendar(login, user["contributionsCollection"]["contributionYears"], token)
+    days = {d: c for d, c in days.items() if d <= today}
+    cur, best = compute_streaks(days, today)
+    window = [(today - timedelta(days=i), days.get(today - timedelta(days=i), 0)) for i in range(29, -1, -1)]
+
+    overrides = profile.get("project_overrides", {})
+    pinned = []
+    for node in user["pinnedItems"]["nodes"]:
+        o = overrides.get(node["nameWithOwner"], {})
+        lang = node.get("primaryLanguage") or {}
+        pinned.append({
+            "nwo": node["nameWithOwner"],
+            "name": o.get("name", node["name"].lower()),
+            "badge": o.get("badge"),
+            "blurb": o.get("blurb") or (node.get("description") or "").lower(),
+            "lang": (lang.get("name") or "").lower(),
+            "lang_color": lang.get("color") or MID,
+            "stars": node["stargazerCount"],
+            "pushed": datetime.fromisoformat(node["pushedAt"].replace("Z", "+00:00")).date(),
+        })
+
+    tokens_path = DATA / "tokens.json"
+    langs_path = DATA / "languages.json"
+    if langs_path.exists():
+        langs_doc = json.loads(langs_path.read_text())
+        langs = [(l["name"], l["pct"], l["color"]) for l in langs_doc["languages"]]
+        langs_note = f"{langs_doc['repos']} repos, each weighted equally"
+    else:
+        langs = aggregate_languages(user["repositories"]["nodes"], set(profile.get("exclude_languages", [])))
+        langs_note = "by bytes, public repos"
+    return {
+        "now": now,
+        "today": today,
+        "window": window,
+        "total": sum(days.values()),
+        "streak": (cur, best),
+        "langs": langs,
+        "langs_note": langs_note,
+        "pinned": pinned,
+        "tokens": json.loads(tokens_path.read_text()) if tokens_path.exists() else None,
+    }
+
+
