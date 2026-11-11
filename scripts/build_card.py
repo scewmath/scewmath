@@ -603,3 +603,36 @@ def sec_pinned(ctx, d, profile):
     return "".join(out), y0 + len(pins) * row_h - 8
 
 
+def sec_tokens(ctx, d, profile):
+    t = d["tokens"]
+    total = t["total"]
+    since = date.fromisoformat(t["since"])
+    synced = datetime.fromisoformat(t["updated"].replace("Z", "+00:00")).astimezone(ZoneInfo(profile.get("timezone", "UTC")))
+    out = [heading(P, 34, "ai token spend", f"since {month_year(since)}  ·  synced {month_day(synced.date())}", ctx)]
+    s = 6
+    text = fmt(total)
+    while px_width(text, s) > 520 and s > 3:
+        s -= 1
+    out.append(big_number(text, P, 56, s, ctx))
+    tx = P + px_width(text, s) + 28
+    out.append(T(tx, 56 + 7 * s / 2 - 2, span("≈ ", DIM) + span(human(total) + " tokens", INK), size=16))
+    out.append(T(tx, 56 + 7 * s / 2 + 20, esc(f"{short(t.get('fresh', 0))} fresh, rest is cache reads"), size=12, fill=DIM))
+
+    goal = milestone(total)
+    by, bwid = 56 + 7 * s + 30, W - 2 * P - 120
+    tools = t.get("by_tool", {})
+    colors = {"claude_code": ctx.accent, "codex": ctx.accent2}
+    labels = {"claude_code": "claude code", "codex": "codex"}
+    segs = [(v["total"] / goal, colors.get(k, MID)) for k, v in tools.items() if v["total"]] or [(total / goal, ctx.accent)]
+    out.append(bar(P, by, bwid, 14, total / goal, ctx, delay=0.5, segments=segs))
+    out.append(T(W - P, by + 12, f"{short(total)}/{short(goal)}", size=14, fill=INK, anchor="end"))
+    lx = P
+    for k, v in tools.items():
+        pct = v["total"] / total * 100 if total else 0
+        out.append(f'<rect x="{n(lx)}" y="{by + 30}" width="9" height="9" fill="{colors.get(k, MID)}"/>')
+        label = f"{labels.get(k, k)}  {short(v['total'])}  ({pct:.0f}%)"
+        out.append(T(lx + 16, by + 39, esc(label), size=12, fill=MID))
+        lx += 16 + len(label) * cw(12) + 28
+    return "".join(out), by + 50
+
+
