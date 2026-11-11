@@ -571,3 +571,35 @@ def sec_langs_now(ctx, d, profile):
     return "".join(out), h
 
 
+def sec_pinned(ctx, d, profile):
+    pins = d["pinned"]
+    out = [heading(P, 34, "pinned", f"{len(pins)} repos, live from github", ctx)]
+    y0, row_h = 64, 48
+    right_meta = W - P
+    for i, p in enumerate(pins):
+        y = y0 + i * row_h
+        last = i == len(pins) - 1
+        out.append(T(P, y, "└─" if last else "├─", size=13, fill=DIM))
+        if not last:
+            out.append(T(P, y + 20, "│", size=13, fill=DIM))
+        x = P + 30
+        out.append(T(x, y, esc(p["name"]), size=14, fill=INK, weight=700))
+        x += len(p["name"]) * cw(14) + 12
+        if p.get("badge"):
+            label = p["badge"].upper()
+            bw = len(label) * cw(10) + 14
+            out.append(f'<rect x="{n(x)}" y="{y - 12}" width="{n(bw)}" height="16" rx="3" fill="none" stroke="{ctx.accent}"/>')
+            out.append(T(x + 7, y, esc(label), size=10, fill=ctx.accent, weight=700))
+            x += bw + 12
+        out.append(T(x, y, esc(p["nwo"]), size=12, fill=DIM))
+        meta = []
+        if p["lang"]:
+            meta.append(span("● ", p["lang_color"]) + span(p["lang"], MID))
+        meta.append(span(f"★{p['stars']}", INK if p["stars"] else DIM))
+        meta.append(span(month_year(p["pushed"]), DIM))
+        out.append(T(right_meta, y, span("  ", DIM).join(meta), size=12, anchor="end"))
+        if p["blurb"]:
+            out.append(T(P + 30, y + 20, esc(clip(p["blurb"], 12, W - 2 * P - 30)), size=12, fill=MID))
+    return "".join(out), y0 + len(pins) * row_h - 8
+
+
