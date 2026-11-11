@@ -636,3 +636,13 @@ def sec_tokens(ctx, d, profile):
     return "".join(out), by + 50
 
 
+def sec_footer(ctx, d, profile):
+    stamp = d["now"].astimezone(timezone.utc).strftime("%Y-%m-%d %H:%M utc")
+    out = [
+        f'<rect x="{P}" y="20" width="8" height="8" fill="{ctx.accent}">{blink(ctx, "2s")}</rect>',
+        T(P + 16, 28, "regenerated every 6h by github actions", size=12, fill=DIM),
+        T(W - P, 28, f"last sync {stamp}", size=12, fill=DIM, anchor="end"),
+    ]
+    return "".join(out), 44
+
+
