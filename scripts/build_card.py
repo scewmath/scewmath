@@ -339,3 +339,81 @@ def build_data(profile, now=None):
     }
 
 
+# ---------------------------------------------------------------- drawing
+class Ctx:
+    def __init__(self, accent, motion):
+        self.accent = accent
+        self.accent2 = tint(accent, 0.45)
+        self.motion = motion
+
+
+def divider(y, x1=0, x2=W):
+    return f'<line x1="{n(x1)}" y1="{n(y)}" x2="{n(x2)}" y2="{n(y)}" stroke="{BORDER}" stroke-dasharray="4 4"/>'
+
+
+def vdivider(x, y1, y2):
+    return f'<line x1="{n(x)}" y1="{n(y1)}" x2="{n(x)}" y2="{n(y2)}" stroke="{BORDER}" stroke-dasharray="4 4"/>'
+
+
+def heading(x, y, label, extra, ctx):
+    tail = span(f"  ·  {extra}", DIM) if extra else ""
+    return T(x, y, span(label.upper(), INK) + tail, size=12, extra=' letter-spacing="1.5"')
+
+
+def grow_x(width, delay, ctx, dur=1.0):
+    if not ctx.motion:
+        return ""
+    return (f'<animate attributeName="width" from="0" to="{n(width)}" dur="{dur}s" begin="{delay}s" '
+            f'fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".2 .8 .2 1"/>')
+
+
+def bar(x, y, w, h, frac, ctx, delay=0.0, segments=None):
+    """Track + accent fill + dithered leading edge. segments: [(frac, color)] stacked."""
+    out = [f'<rect x="{n(x)}" y="{n(y)}" width="{n(w)}" height="{n(h)}" fill="{TRACK}"/>']
+    for i in range(1, 10):
+        tx = x + w * i / 10
+        out.append(f'<rect x="{n(tx)}" y="{n(y + h - 3)}" width="1" height="3" fill="{FAINT}"/>')
+    segments = segments or [(frac, ctx.accent)]
+    fill_w = max(min(sum(f for f, _ in segments), 1), 0) * w
+    if fill_w <= 0:
+        return "".join(out)
+    cid = f"cl{abs(hash((x, y, w))) % 10**8}"
+    out.append(f'<clipPath id="{cid}"><rect x="{n(x)}" y="{n(y)}" width="{n(fill_w)}" height="{n(h)}">'
+               f'{grow_x(fill_w, delay, ctx)}</rect></clipPath>')
+    inner, sx = [], x
+    for f, color in segments:
+        sw = max(min(f, 1), 0) * w
+        inner.append(f'<rect x="{n(sx)}" y="{n(y)}" width="{n(sw)}" height="{n(h)}" fill="{color}"/>')
+        sx += sw
+    # dithered edge: checkerboard bleeding past the fill, like a cooling pixel trail
+    edge = min(8, fill_w)
+    inner.append(f'<rect x="{n(x + fill_w - edge)}" y="{n(y)}" width="{n(edge)}" height="{n(h)}" fill="url(#dither)"/>')
+    out.append(f'<g clip-path="url(#{cid})">{"".join(inner)}</g>')
+    out.append(f'<rect x="{n(x + fill_w)}" y="{n(y)}" width="4" height="{n(h)}" fill="url(#dither)" opacity=".6"/>')
+    return "".join(out)
+
+
+def big_number(text, x, y, s, ctx):
+    """Pixel digits with a dithered drop shadow."""
+    off = max(s / 2, 1.5)
+    return (f'<path d="{px_path(text, x + off, y + off, s)}" fill="url(#shade)"/>'
+            f'<path d="{px_path(text, x, y, s)}" fill="{INK}"/>')
+
+
+def defs(ctx):
+    return (
+        "<defs>"
+        f'<pattern id="dither" width="4" height="4" patternUnits="userSpaceOnUse">'
+        f'<rect width="2" height="2" fill="{ctx.accent}"/><rect x="2" y="2" width="2" height="2" fill="{ctx.accent}"/></pattern>'
+        f'<pattern id="shade" width="2" height="2" patternUnits="userSpaceOnUse">'
+        f'<rect width="1" height="1" fill="#4a4a4a"/><rect x="1" y="1" width="1" height="1" fill="#4a4a4a"/></pattern>'
+        "</defs>"
+    )
+
+
+def blink(ctx, dur="1.1s"):
+    if not ctx.motion:
+        return ""
+    return f'<animate attributeName="opacity" values="1;0" keyTimes="0;.5" calcMode="discrete" dur="{dur}" repeatCount="indefinite"/>'
+
+
