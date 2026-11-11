@@ -1,0 +1,63 @@
+{
+  "login": "scewmath",
+  "name": "CHRIS MATHEWS",
+  "tagline": "cs @utaustin",
+  "location": "austin, tx",
+  "timezone": "America/Chicago",
+  "accent": "#BF5700",
+  "exclude_languages": [
+    "Jupyter Notebook",
+    "TeX",
+    "PHP",
+    "Makefile",
+    "Dockerfile",
+    "Procfile"
+  ],
+  "now": [
+    [
+      "school",
+      "cs @ ut austin, class of '28"
+    ],
+    [
+      "last",
+      "swe intern @ the antifraud company"
+    ],
+    [
+      "building",
+      "ai agents, rag + data pipelines"
+    ],
+    [
+      "hacking",
+      "hacktx winner, yc startup school"
+    ],
+    [
+      "chess",
+      "2200 elo"
+    ]
+  ],
+  "projects_note": "Featured projects = your GitHub pinned repos (live). Overrides below are optional, keyed by owner/repo.",
+  "project_overrides": {
+    "arnavjain-cs/Aurum": {
+      "name": "aurum",
+      "blurb": "ercot power-grid stress sim + cascade-failure alerts"
+    },
+    "rajpatel923/goonbytes": {
+      "name": "vigilant",
+      "badge": "hacktx winner",
+      "blurb": "real-time weapon detection on live camera feeds"
+    },
+    "bradmcnew/mro-agent": {
+      "name": "partsnap",
+      "blurb": "snap a photo, find + order the replacement part"
+    },
+    "PanavMhatre/LaunchClaw": {
+      "name": "launchclaw",
+      "blurb": "one-click deploys of isolated ai agents"
+    },
+    "cleinad/Proquote": {
+      "name": "proquote",
+      "badge": "yc hackathon",
+      "blurb": "parallel browser agents pull supplier quotes"
+    }
+  }
+}
