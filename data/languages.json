@@ -1,34 +1,34 @@
 {
-  "repos": 23,
+  "repos": 24,
   "languages": [
     {
       "name": "TypeScript",
-      "pct": 39.07,
+      "pct": 37.44,
       "color": "#3178c6"
     },
     {
       "name": "Python",
-      "pct": 29.01,
+      "pct": 27.8,
       "color": "#3572A5"
     },
     {
-      "name": "Java",
-      "pct": 13.04,
-      "color": "#b07219"
-    },
-    {
       "name": "HTML",
-      "pct": 9.45,
+      "pct": 13.22,
       "color": "#e34c26"
     },
     {
+      "name": "Java",
+      "pct": 12.5,
+      "color": "#b07219"
+    },
+    {
       "name": "C",
-      "pct": 3.56,
+      "pct": 3.41,
       "color": "#555555"
     },
     {
       "name": "CSS",
-      "pct": 1.94,
+      "pct": 1.86,
       "color": "#663399"
     }
   ]
