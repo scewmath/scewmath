@@ -3,7 +3,7 @@
   "languages": [
     {
       "name": "TypeScript",
-      "pct": 37.44,
+      "pct": 37.46,
       "color": "#3178c6"
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "name": "CSS",
-      "pct": 1.86,
+      "pct": 1.84,
       "color": "#663399"
     }
   ]
