@@ -1,3 +1,3 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/scewmath/scewmath/main/assets/card.svg?t=1795477920" alt="Chris Mathews: cs @utaustin. Tech stack, GitHub contributions and streaks, languages, pinned repos, and AI token spend" />
+  <img src="https://raw.githubusercontent.com/scewmath/scewmath/main/assets/card.svg?t=1795489058" alt="Chris Mathews: cs @utaustin. Tech stack, GitHub contributions and streaks, languages, pinned repos, and AI token spend" />
 </p>
